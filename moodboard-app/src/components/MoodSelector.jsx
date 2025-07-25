@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import sampleMoods from '../utils/ModelColor';
-import MoodCard from './MoodCrad';
+import React, { useState, useEffect } from "react";
+import sampleMoods from "../utils/ModelColor";
+import MoodCard from "./MoodCrad";
 
 const MoodSelector = () => {
   const [moodEntries, setMoodEntries] = useState([]);
   const [selectedMood, setSelectedMood] = useState(null);
-  const [situation, setSituation] = useState('');
+  const [situation, setSituation] = useState("");
   const [isLoaded, setIsLoaded] = useState(false); // prevents overwriting on mount
 
   // ✅ Load from localStorage on first render
   useEffect(() => {
-    const stored = localStorage.getItem('moodEntries');
+    const stored = localStorage.getItem("moodEntries");
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
@@ -19,7 +19,7 @@ const MoodSelector = () => {
         }
       } catch (err) {
         console.error("Error parsing localStorage:", err);
-        localStorage.removeItem('moodEntries');
+        localStorage.removeItem("moodEntries");
       }
     }
     setIsLoaded(true);
@@ -28,7 +28,7 @@ const MoodSelector = () => {
   // ✅ Save to localStorage only after initial load
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('moodEntries', JSON.stringify(moodEntries));
+      localStorage.setItem("moodEntries", JSON.stringify(moodEntries));
     }
   }, [moodEntries, isLoaded]);
 
@@ -49,20 +49,53 @@ const MoodSelector = () => {
       };
       setMoodEntries((prev) => [entry, ...prev]);
       setSelectedMood(null);
-      setSituation('');
+      setSituation("");
     }
   };
 
   const handleCancelSelection = () => {
     setSelectedMood(null);
-    setSituation('');
+    setSituation("");
   };
 
+  const Timer = ({ seconds }) => {
+  // initialize timeLeft with the seconds prop
+  const [timeLeft, setTimeLeft] = useState(seconds);
+
+  useEffect(() => {
+    // exit early when we reach 0
+    if (!timeLeft) return;
+
+    // save intervalId to clear the interval when the
+    // component re-renders
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    // clear interval on re-render to avoid memory leaks
+    return () => clearInterval(intervalId);
+    // add timeLeft as a dependency to re-rerun the effect
+    // when we update it
+  }, [timeLeft]);
+
+  return (
+    <div>
+      <h1>{timeLeft}</h1>
+    </div>
+  );
+};
+
+
+const handleDeleteMood = (idToDelete) => {
+  setMoodEntries((prev) => prev.filter((entry) => entry.id !== idToDelete));
+};
   return (
     <div className="min-h-screen bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)] transition-colors duration-300 text-gray-800 dark:text-gray-100">
       <header className="text-center py-10">
         <h1 className="text-4xl font-bold mb-2">🌈 MoodBoard</h1>
-        <p className="text-lg text-gray-500 dark:text-gray-400">Track your emotions visually</p>
+        <p className="text-lg text-gray-500 dark:text-gray-400">
+          Track your emotions visually
+        </p>
       </header>
 
       <main className="flex flex-col items-center justify-center px-4">
@@ -118,6 +151,8 @@ const MoodSelector = () => {
               mood={mood}
               timestamp={timestamp}
               note={note}
+                id={id}
+                 onDelete={handleDeleteMood}
             />
           ))}
         </div>
