@@ -62,8 +62,11 @@ const MoodSelector = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-100 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300 text-gray-800 dark:text-gray-100">
       <header className="text-center py-10">
-        <h1 className="text-5xl font-bold mb-2 text-purple-600 dark:text-purple-300">🌈 MoodBoard</h1>
-        <p className="text-lg text-gray-500 dark:text-gray-400">Track your emotions visually</p>
+        <h1 className="text-5xl font-bold mb-2 text-purple-600 dark:text-purple-300">MoodBoard</h1>
+   <p className="text-lg text-gray-500 dark:text-gray-400 text-center">
+Lift your vibe up ♨♨
+</p>
+
       </header>
 
       <main className="flex flex-col items-center justify-center px-4">
