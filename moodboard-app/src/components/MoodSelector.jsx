@@ -6,9 +6,8 @@ const MoodSelector = () => {
   const [moodEntries, setMoodEntries] = useState([]);
   const [selectedMood, setSelectedMood] = useState(null);
   const [situation, setSituation] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false); // prevents overwriting on mount
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // ✅ Load from localStorage on first render
   useEffect(() => {
     const stored = localStorage.getItem("moodEntries");
     if (stored) {
@@ -25,7 +24,6 @@ const MoodSelector = () => {
     setIsLoaded(true);
   }, []);
 
-  // ✅ Save to localStorage only after initial load
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem("moodEntries", JSON.stringify(moodEntries));
@@ -37,8 +35,7 @@ const MoodSelector = () => {
   };
 
   const handleAddMoodEntry = (e) => {
-    e.preventDefault(); // ✅ prevent default form submission if in form
-
+    e.preventDefault();
     const matchedMood = sampleMoods.find((m) => m.mood === selectedMood);
     if (matchedMood) {
       const entry = {
@@ -58,44 +55,15 @@ const MoodSelector = () => {
     setSituation("");
   };
 
-  const Timer = ({ seconds }) => {
-  // initialize timeLeft with the seconds prop
-  const [timeLeft, setTimeLeft] = useState(seconds);
-
-  useEffect(() => {
-    // exit early when we reach 0
-    if (!timeLeft) return;
-
-    // save intervalId to clear the interval when the
-    // component re-renders
-    const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-
-    // clear interval on re-render to avoid memory leaks
-    return () => clearInterval(intervalId);
-    // add timeLeft as a dependency to re-rerun the effect
-    // when we update it
-  }, [timeLeft]);
+  const handleDeleteMood = (idToDelete) => {
+    setMoodEntries((prev) => prev.filter((entry) => entry.id !== idToDelete));
+  };
 
   return (
-    <div>
-      <h1>{timeLeft}</h1>
-    </div>
-  );
-};
-
-
-const handleDeleteMood = (idToDelete) => {
-  setMoodEntries((prev) => prev.filter((entry) => entry.id !== idToDelete));
-};
-  return (
-    <div className="min-h-screen bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)] transition-colors duration-300 text-gray-800 dark:text-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-100 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300 text-gray-800 dark:text-gray-100">
       <header className="text-center py-10">
-        <h1 className="text-4xl font-bold mb-2">🌈 MoodBoard</h1>
-        <p className="text-lg text-gray-500 dark:text-gray-400">
-          Track your emotions visually
-        </p>
+        <h1 className="text-5xl font-bold mb-2 text-purple-600 dark:text-purple-300">🌈 MoodBoard</h1>
+        <p className="text-lg text-gray-500 dark:text-gray-400">Track your emotions visually</p>
       </header>
 
       <main className="flex flex-col items-center justify-center px-4">
@@ -103,11 +71,11 @@ const handleDeleteMood = (idToDelete) => {
           {sampleMoods.map(({ mood, emoji, color }) => (
             <button
               key={mood}
-              className="rounded-lg p-4 shadow text-white font-semibold"
+              className="rounded-xl p-4 shadow-md transition transform hover:scale-105 hover:shadow-xl text-white font-semibold"
               style={{ backgroundColor: color }}
               onClick={() => handleMoodClick(mood)}
             >
-              {emoji} {mood}
+              <span className="text-xl">{emoji}</span> {mood}
             </button>
           ))}
         </div>
@@ -115,35 +83,35 @@ const handleDeleteMood = (idToDelete) => {
         {selectedMood && (
           <form
             onSubmit={handleAddMoodEntry}
-            className="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-10 relative"
+            className="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg mb-10 relative animate-fadeIn"
           >
             <button
               onClick={handleCancelSelection}
               type="button"
-              className="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-xl"
+              className="absolute top-2 right-3 text-gray-400 hover:text-red-500 text-2xl font-bold"
             >
               ×
             </button>
-            <h2 className="text-lg font-semibold mb-2">
-              You selected <span className="text-blue-600">{selectedMood}</span>
+            <h2 className="text-lg font-semibold mb-4">
+              You selected <span className="text-blue-600 dark:text-blue-400">{selectedMood}</span>
             </h2>
             <textarea
               value={situation}
               onChange={(e) => setSituation(e.target.value)}
               rows="4"
               placeholder="Describe your current situation..."
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-400"
+              className="w-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 rounded px-3 py-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
             <button
               type="submit"
-              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition"
             >
               Save Entry
             </button>
           </form>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4">
           {moodEntries.map(({ id, emoji, mood, timestamp, note }) => (
             <MoodCard
               key={id}
@@ -151,8 +119,8 @@ const handleDeleteMood = (idToDelete) => {
               mood={mood}
               timestamp={timestamp}
               note={note}
-                id={id}
-                 onDelete={handleDeleteMood}
+              id={id}
+              onDelete={handleDeleteMood}
             />
           ))}
         </div>

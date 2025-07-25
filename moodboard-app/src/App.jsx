@@ -1,8 +1,10 @@
+import {React} from "react";
 import MoodCrad from "./components/MoodCrad";
 import MoodSelector from "./components/MoodSelector";
 
 
 function App() {
+ 
   return (
     <>
     <MoodSelector/>
