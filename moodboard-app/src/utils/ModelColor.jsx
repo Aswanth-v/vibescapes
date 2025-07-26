@@ -17,8 +17,8 @@ const sampleMoods = [
   },
   {
     id: 3,
-    mood: "Excited",
-    emoji: "🤩",
+    mood: "Lonly",
+    emoji: "😪",
     color: "#fbbf24",
     note: "Launched my mood app!",
     timestamp: "2025-07-23T15:10:00Z"

@@ -2,14 +2,31 @@ import React, { useEffect, useRef, useState } from "react";
 import sad1 from "../assets/sad/sad1.mp4";
 import sad2 from "../assets/sad/sad2.mp4";
 import sad3 from "../assets/sad/sad3.mp4";
+
 import happy1 from "../assets/happy/happy1.mp4"
 import happy2 from '../assets/happy/happy2.mp4'
 import happy3 from '../assets/happy/happy3.mp4'
+
+import lonly1 from '../assets/lonly/lonly1.mp4'
+import lonly2 from '../assets/lonly/lonly2.mp4'
+import lonly3 from '../assets/lonly/lonly3.mp4'
+
+import angry1 from '../assets/angry/angry1.mp4'
+import angry2 from '../assets/angry/angry2.mp4'
+import angry3 from '../assets/angry/angry3.mp4'
+
+
+import relaxed1 from '../assets/relaxed/relaxed1'
+import relaxed1 from '../assets/relaxed/relaxed1'
+import relaxed1 from '../assets/relaxed/relaxed1'
 
 
 
 const sadVd = [sad1, sad2, sad3];
 const happyvs=[happy1,happy2,happy3]
+const lonlyvd=[lonly1,lonly2,lonly3]
+const angryvd=[angry1,angry2,angry3]
+
 const MoodCard = ({ emoji, mood, timestamp, note, id, onDelete }) => {
   const [videoSrc, setVideoSrc] = useState(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -21,10 +38,32 @@ const MoodCard = ({ emoji, mood, timestamp, note, id, onDelete }) => {
       setVideoSrc(sadVd[randomIndex]);
     }
   }, [mood]);
+
+
   useEffect(() => {
     if (mood.toLowerCase() === "happy") {
       const randomIndex = Math.floor(Math.random() * happyvs.length);
       setVideoSrc(happyvs[randomIndex]);
+    }
+  }, [mood]);
+
+useEffect(() => {
+    if (mood.toLowerCase() === "lonly") {
+      const randomIndex = Math.floor(Math.random() * lonlyvd.length);
+      setVideoSrc(lonlyvd[randomIndex]);
+      console.log(mood);
+      
+    }
+  }, [mood]);
+
+
+  
+useEffect(() => {
+    if (mood.toLowerCase() === "angry") {
+      const randomIndex = Math.floor(Math.random() * angryvd.length);
+      setVideoSrc(angryvd[randomIndex]);
+      console.log(mood);
+      
     }
   }, [mood]);
 
