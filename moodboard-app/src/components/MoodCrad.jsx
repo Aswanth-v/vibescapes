@@ -3,9 +3,9 @@ import sad1 from "../assets/sad/sad1.mp4";
 import sad2 from "../assets/sad/sad2.mp4";
 import sad3 from "../assets/sad/sad3.mp4";
 
-import happy1 from "../assets/happy/happy1.mp4"
-import happy2 from '../assets/happy/happy2.mp4'
-import happy3 from '../assets/happy/happy3.mp4'
+//import happy1 from '../assets/happy/happy1.mp4'
+//import happy2 from '../assets/happy/happy2.mp4'
+//import happy3 from '../assets/happy/happy3.mp4'
 
 import lonly1 from '../assets/lonly/lonly1.mp4'
 import lonly2 from '../assets/lonly/lonly2.mp4'
