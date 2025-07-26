@@ -36,6 +36,13 @@ const MoodSelector = () => {
 
   const handleAddMoodEntry = (e) => {
     e.preventDefault();
+    e.preventDefault(); // prevent page reload
+
+  if (!situation.trim()) {
+    alert("Please describe your current situation ");
+    return;
+  }
+
     const matchedMood = sampleMoods.find((m) => m.mood === selectedMood);
     if (matchedMood) {
       const entry = {
@@ -47,6 +54,7 @@ const MoodSelector = () => {
       setMoodEntries((prev) => [entry, ...prev]);
       setSelectedMood(null);
       setSituation("");
+
     }
   };
 
